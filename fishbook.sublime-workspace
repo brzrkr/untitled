@@ -1,0 +1,242 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 297.0,
+		"selected_items":
+		[
+			[
+				"brows",
+				"SFTP: Browse Remote…"
+			],
+			[
+				"beau",
+				"HTMLBeautify"
+			],
+			[
+				"beaut",
+				"HTMLBeautify"
+			],
+			[
+				"beauti",
+				"HTMLBeautify"
+			],
+			[
+				"beaui",
+				"HTMLBeautify"
+			],
+			[
+				"disable",
+				"Package Control: Disable Package"
+			],
+			[
+				"install",
+				"Selection: Select All"
+			],
+			[
+				"theme",
+				"Themr: Next theme"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"pakage",
+				"Package Control: Discover Packages"
+			]
+		],
+		"width": 1160.0
+	},
+	"console":
+	{
+		"height": 363.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2deb499853c4371624f5a07e27c334aa' + 'bf8c4e67d14fb0525ba4f89698a6d7e1'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Nicolas/Projects/fishbook"
+	],
+	"file_history":
+	[
+		"/C/Users/Nicolas/AppData/Roaming/Sublime Text 3/Packages/HTMLBeautify/HTMLBeautify.sublime-settings",
+		"/C/Users/Nicolas/Projects/vamos/app/controllers/ApplicationsController.php",
+		"/C/Users/Nicolas/Projects/vamos/app/controllers/RemindersController.php",
+		"/C/Users/Nicolas/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Nicolas/Downloads/Adobe Photoshop CC 2014 - 64 bit (Crack) [ChingLiu]/ChingLiu.Install.Notes.nfo",
+		"/C/Users/Nicolas/Projects/vamos/artisan",
+		"/C/Users/Nicolas/Projects/vamos/vendor/composer/autoload_psr4.php",
+		"/C/Users/Nicolas/Projects/vamos/app/config/app.php",
+		"/C/Users/Nicolas/Projects/vamos/app/routes.php",
+		"/C/Users/Nicolas/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/Nicolas/Desktop/meeting.txt",
+		"/C/Coding/php56/php.ini",
+		"/C/Users/Nicolas/Downloads/RestoreSensorServiceWindows10.bat",
+		"/C/Users/Nicolas/Desktop/info.php"
+	],
+	"find":
+	{
+		"height": 84.0
+	},
+	"find_in_files":
+	{
+		"height": 224.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"&#183;",
+			"2",
+			"spaces",
+			"open",
+			"the",
+			"font",
+			"theme",
+			"font",
+			"C:\\",
+			"mcrypt",
+			"extension"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"&middot;"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 41.0
+	},
+	"input":
+	{
+		"height": 67.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.sftp":
+	{
+		"height": 216.0
+	},
+	"project": "fishbook.sublime-project",
+	"replace":
+	{
+		"height": 154.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 602.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

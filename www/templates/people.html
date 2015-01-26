@@ -1,0 +1,9 @@
+<ion-view view-title="People">
+    <ion-content>
+        <ion-list>
+            <ion-item ng-repeat="person in people" href="#/app/people/{{person.id}}">
+                {{person.name}}
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
