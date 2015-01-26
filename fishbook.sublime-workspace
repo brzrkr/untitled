@@ -5,25 +5,38 @@
 		[
 		]
 	},
-	"buffers":
-	[
-	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 297.0,
+		"height": 711.0,
 		"selected_items":
 		[
+			[
+				"wrap",
+				"Emmet: Wrap With Abbreviation"
+			],
+			[
+				"beaut",
+				"HTMLBeautify"
+			],
+			[
+				"format",
+				"Format: Javascript"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"beautif",
+				"HTMLBeautify"
+			],
 			[
 				"brows",
 				"SFTP: Browse Remote…"
 			],
 			[
 				"beau",
-				"HTMLBeautify"
-			],
-			[
-				"beaut",
 				"HTMLBeautify"
 			],
 			[
@@ -37,10 +50,6 @@
 			[
 				"disable",
 				"Package Control: Disable Package"
-			],
-			[
-				"install",
-				"Selection: Select All"
 			],
 			[
 				"theme",
@@ -67,7 +76,7 @@
 				"Package Control: Discover Packages"
 			]
 		],
-		"width": 1160.0
+		"width": 1280.0
 	},
 	"console":
 	{
@@ -86,12 +95,11 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
-	"expanded_folders":
-	[
-		"/C/Users/Nicolas/Projects/fishbook"
-	],
 	"file_history":
 	[
+		"/C/Users/Nicolas/dotfiles/.homestead/Homestead.yaml",
+		"/C/Users/Nicolas/Projects/fishbook-server/app/config/local/database.php",
+		"/C/Users/Nicolas/Projects/fishbook-server/app/config/app.php",
 		"/C/Users/Nicolas/AppData/Roaming/Sublime Text 3/Packages/HTMLBeautify/HTMLBeautify.sublime-settings",
 		"/C/Users/Nicolas/Projects/vamos/app/controllers/ApplicationsController.php",
 		"/C/Users/Nicolas/Projects/vamos/app/controllers/RemindersController.php",
@@ -123,6 +131,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"spot",
+			"person",
+			"messages",
+			"feed",
+			"browse",
+			"playlist",
 			"&#183;",
 			"2",
 			"spaces",
@@ -136,11 +150,19 @@
 			"extension"
 		],
 		"highlight": true,
-		"in_selection": false,
-		"preserve_case": false,
+		"in_selection": true,
+		"preserve_case": true,
 		"regex": false,
 		"replace_history":
 		[
+			"message",
+			"conversation",
+			"post",
+			"user",
+			"message",
+			"messages",
+			"feed",
+			"spot",
 			"&middot;"
 		],
 		"reverse": false,
@@ -149,14 +171,6 @@
 		"whole_word": false,
 		"wrap": true
 	},
-	"groups":
-	[
-		{
-			"sheets":
-			[
-			]
-		}
-	],
 	"incremental_find":
 	{
 		"height": 41.0
@@ -196,7 +210,6 @@
 	{
 		"height": 216.0
 	},
-	"project": "fishbook.sublime-project",
 	"replace":
 	{
 		"height": 154.0
@@ -226,7 +239,6 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 0,
 	"settings":
 	{
 	},
@@ -234,7 +246,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 602.0,
+	"side_bar_width": 700.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
