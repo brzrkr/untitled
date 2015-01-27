@@ -4,10 +4,27 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('fishbook', ['ionic', 'fishbook.controllers'])
+angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services'])
 
-.run(function($ionicPlatform) {
+.constant('AUTH_EVENTS', {
+  loginSuccess: 'auth-login-success',
+  loginFailed: 'auth-login-failed',
+  logoutSuccess: 'auth-logout-success',
+  sessionTimeout: 'auth-session-timeout',
+  notAuthenticated: 'auth-not-authenticated',
+})
+
+.run(function($ionicPlatform, $rootScope, AuthService, AUTH_EVENTS) {
     $ionicPlatform.ready(function() {
+
+        // $rootScope.$on('$stateChangeStart', function (event, next) {
+        //     event.preventDefault();
+
+        //     // user is not logged in
+        //     if (!AuthService.isAuthenticated()) {
+        //         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+        //     }
+        // });
 
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -22,6 +39,10 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers'])
 
     });
 })
+
+// .config(['$httpProvider', function($httpProvider) {
+//     $httpProvider.defaults.withCredentials = true;
+// }])
 
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -52,7 +73,7 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers'])
     })
 
     .state('app.spots', {
-        url: "/spot",
+        url: "/spots",
         views: {
             'menuContent': {
                 templateUrl: "templates/spots.html",
@@ -62,7 +83,7 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers'])
     })
 
     .state('app.spot', {
-        url: "/spot/:spotId",
+        url: "/spots/:spotId",
         views: {
             'menuContent': {
                 templateUrl: "templates/spot.html",
@@ -72,7 +93,7 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers'])
     })
 
     .state('app.users', {
-        url: "/user",
+        url: "/users",
         views: {
             'menuContent': {
                 templateUrl: "templates/users.html",
@@ -82,7 +103,7 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers'])
     })
 
     .state('app.user', {
-        url: "/user/:userId",
+        url: "/users/:userId",
         views: {
             'menuContent': {
                 templateUrl: "templates/user.html",
@@ -92,7 +113,7 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers'])
     })
 
     .state('app.posts', {
-        url: "/post",
+        url: "/posts",
         views: {
             'menuContent': {
                 templateUrl: "templates/posts.html",
@@ -102,7 +123,7 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers'])
     })
 
     .state('app.post', {
-        url: "/post/:postId",
+        url: "/posts/:postId",
         views: {
             'menuContent': {
                 templateUrl: "templates/post.html",
@@ -111,8 +132,28 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers'])
         }
     })
 
+    .state('app.post.comments', {
+        url: "/posts/:postId/comments",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/post.html",
+                controller: 'PostCtrl'
+            }
+        }
+    })
+
+    .state('app.post.comment', {
+        url: "/posts/:postId/comments/:commentId",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/comment.html",
+                controller: 'PostCtrl'
+            }
+        }
+    })
+
     .state('app.conversations', {
-        url: "/conversation",
+        url: "/conversations",
         views: {
             'menuContent': {
                 templateUrl: "templates/conversations.html",
@@ -122,7 +163,7 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers'])
     })
 
     .state('app.conversation', {
-        url: "/conversation/:conversationId",
+        url: "/conversations/:conversationId",
         views: {
             'menuContent': {
                 templateUrl: "templates/conversation.html",
@@ -131,8 +172,8 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers'])
         }
     })
 
-    .state('app.messages', {
-        url: "/message",
+    .state('app.conversation.messages', {
+        url: "/conversations/:conversationId/messages",
         views: {
             'menuContent': {
                 templateUrl: "templates/messages.html",
@@ -141,8 +182,8 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers'])
         }
     })
 
-    .state('app.message', {
-        url: "/message/:messageId",
+    .state('app.conversation.message', {
+        url: "/conversations/:conversationId/messages/:messageId",
         views: {
             'menuContent': {
                 templateUrl: "templates/message.html",

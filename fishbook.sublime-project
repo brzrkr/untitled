@@ -7,7 +7,7 @@
 		},
 		{
 			"follow_symlinks": true,
-			"path": "C:\\Users\\Nicolas\\Projects\\fishbook-server"
+			"path": "../fishbook-server"
 		}
 	]
 }
