@@ -8,9 +8,13 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 711.0,
+		"height": 239.0,
 		"selected_items":
 		[
+			[
+				"format",
+				"Format: Javascript"
+			],
 			[
 				"wrap",
 				"Emmet: Wrap With Abbreviation"
@@ -18,10 +22,6 @@
 			[
 				"beaut",
 				"HTMLBeautify"
-			],
-			[
-				"format",
-				"Format: Javascript"
 			],
 			[
 				"install",
@@ -76,7 +76,7 @@
 				"Package Control: Discover Packages"
 			]
 		],
-		"width": 1280.0
+		"width": 928.0
 	},
 	"console":
 	{
@@ -97,6 +97,67 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/js/app.js",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/app/storage/logs/laravel.log",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/app/config/remote (brzrkr-work's conflicted copy 2015-01-29).php",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/app/filters.php",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/templates/menu.html",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/templates/app.html",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/app/routes.php",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/scss/ionic.app.scss",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/templates/auth.html",
+		"/C/Coding/nginx/conf/nginx.conf",
+		"/C/Coding/nginx/conf/sites/fishbook.conf",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/app/config/app.php",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/app/config/packages/barryvdh/laravel-cors/config.php",
+		"/C/Coding/nginx/conf/laravel4.conf",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/vendor/intervention/image/tests/FileTest.php",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/node_modules/bower/node_modules/mout/object/forIn.js",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/fishbook.sublime-project",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/js/services.js",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/templates/tutorial.html",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/templates/comments.html",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/templates/browse.html",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/templates/register.html",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/js/controllers.js",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/templates/root.html",
+		"/C/Coding/php56/php.ini",
+		"/C/Coding/nginx/logs/access.log",
+		"/C/Coding/nginx/logs/error.log",
+		"/C/Coding/nginx/logs/nginx.pid",
+		"/C/Coding/composer/composer.bat",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/templates/login.html",
+		"/C/Users/Nicolas/Downloads/Navicat Premium v11.0.16 x86 x64/core.nfo",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/index.html",
+		"/C/Users/Nicolas/AppData/Local/Microsoft/Windows/INetCache/IE/4Q5QR7S5/WP_20150128_11_15_51_Pro[1].jpg",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/node_modules/gulp-util/lib/isNull.js",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/ionic.project",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/vendor/webpatser/laravel-uuid/src/Webpatser/Uuid/Uuid.php",
+		"/C/Coding/nginx/logs/fishbook.app/error.log",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/platforms/android/CordovaLib/src/com/squareup/okhttp/internal/http/RouteSelector.java",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/vendor/fzaninotto/faker/src/Faker/Provider/Uuid.php",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/node_modules/bower/node_modules/request/node_modules/node-uuid/bin/uuid",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/node_modules/bower/node_modules/request/node_modules/node-uuid/uuid.js",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/node_modules/bower/node_modules/request/node_modules/.bin/uuid.cmd",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/node_modules/bower/node_modules/request/node_modules/.bin/uuid",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/vendor/nikic/php-parser/lib/PHPParser/Node/Stmt/UseUse.php",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/www/templates/user.html",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/vendor/laravel/framework/src/Illuminate/Foundation/Console/KeyGenerateCommand.php",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/vendor/swiftmailer/swiftmailer/lib/swiftmailer_generate_mimes_config.php",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/node_modules/bower/node_modules/insight/node_modules/tough-cookie/generate-pubsuffix.js",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/node_modules/bower/node_modules/fstream-ignore/node_modules/minimatch/node_modules/brace-expansion/test/generate.sh",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/node_modules/shelljs/scripts/generate-docs.js",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher/GenericEvent.php",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/gulpfile.js",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook/node_modules/bower/node_modules/retry/lib/retry_operation.js",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/readme.md",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/bootstrap/start.php",
+		"/C/Coding/nginx/conf/sites/fishbook.app.conf",
+		"/C/Coding/php56/php.ini-development",
+		"/C/Users/Nicolas/Downloads/Navicat Premium v11.0.18 x86 x64/core.nfo",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/app/config/brzrkr-tap/database.php",
+		"/C/Users/Nicolas/Dropbox/Projects/fishbook-server/app/config/local/database.php",
+		"/C/Coding/nginx/logs/fishbook.app/access.log",
 		"/C/Users/Nicolas/dotfiles/.homestead/Homestead.yaml",
 		"/C/Users/Nicolas/Projects/fishbook-server/app/config/local/database.php",
 		"/C/Users/Nicolas/Projects/fishbook-server/app/config/app.php",
@@ -111,19 +172,20 @@
 		"/C/Users/Nicolas/Projects/vamos/app/routes.php",
 		"/C/Users/Nicolas/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/C/Users/Nicolas/Desktop/meeting.txt",
-		"/C/Coding/php56/php.ini",
 		"/C/Users/Nicolas/Downloads/RestoreSensorServiceWindows10.bat",
 		"/C/Users/Nicolas/Desktop/info.php"
 	],
 	"find":
 	{
-		"height": 84.0
+		"height": 68.0
 	},
 	"find_in_files":
 	{
 		"height": 224.0,
 		"where_history":
 		[
+			"C:\\Users\\Nicolas\\Dropbox\\Projects\\fishbook\\www",
+			"C:\\Users\\Nicolas\\Dropbox\\Projects\\fishbook"
 		]
 	},
 	"find_state":
@@ -131,6 +193,35 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"posts",
+			"app.tabs",
+			"app.tabs.posts",
+			"app.tabs",
+			"browse",
+			"browse'",
+			"'",
+			"login",
+			"open",
+			"login",
+			"/app",
+			"toIntro",
+			"extensions",
+			"'(.*)View'",
+			"'(.*)'",
+			"slide",
+			"broadcast",
+			"local",
+			"$localStorage",
+			"error_log",
+			"path",
+			".dll",
+			"error_repo",
+			"error_lo",
+			"display",
+			"error_log",
+			"warnin",
+			"error_log",
+			"log",
 			"spot",
 			"person",
 			"messages",
@@ -150,11 +241,13 @@
 			"extension"
 		],
 		"highlight": true,
-		"in_selection": true,
-		"preserve_case": true,
-		"regex": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
 		"replace_history":
 		[
+			"",
+			"'menuContent'",
 			"message",
 			"conversation",
 			"post",
@@ -173,7 +266,7 @@
 	},
 	"incremental_find":
 	{
-		"height": 41.0
+		"height": 47.0
 	},
 	"input":
 	{
@@ -212,7 +305,7 @@
 	},
 	"replace":
 	{
-		"height": 154.0
+		"height": 124.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -220,6 +313,22 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"filter",
+				"fishbook-server\\app\\filters.php"
+			],
+			[
+				"index",
+				"fishbook\\www\\index.html"
+			],
+			[
+				"routes",
+				"fishbook-server\\app\\routes.php"
+			],
+			[
+				"uuid",
+				"fishbook-server\\vendor\\webpatser\\laravel-uuid\\src\\Webpatser\\Uuid\\Uuid.php"
+			]
 		],
 		"width": 0.0
 	},

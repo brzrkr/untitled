@@ -1,0 +1,33 @@
+<ion-view>
+    <ion-nav-bar class="bar-stable">
+    </ion-nav-bar>
+    <ion-nav-buttons side="left">
+        <button class="button" ng-show="slideIndex == 0" ng-click="startApp()">Skip Tutorial</button>
+        <button class="button" ng-show="slideIndex != 0" ng-click="back()">Back</button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+        <button class="button" ng-show="slideIndex != 2" ng-click="next()">Next</button>
+        <button class="button" ng-show="slideIndex == 2" ng-click="startApp()">Start</button>
+    </ion-nav-buttons>
+
+    <ion-content scroll="false" has-bouncing="false">
+        <ion-slide-box on-slide-changed="slideChanged(index)">
+            <ion-slide class="box blue">
+                <div class="step">
+                    <h1>Step 1</h1>
+                </div>
+            </ion-slide>
+            <ion-slide class="box yellow">
+                <div class="step">
+                    <h1>Step 2</h1>
+                </div>
+            </ion-slide>
+            <ion-slide class="box pink">
+                <div class="step">
+                    <h1>Step 3</h1>
+                </div>
+            </ion-slide>
+        </ion-slide-box>
+    </ion-content>
+</ion-view>

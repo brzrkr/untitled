@@ -14,35 +14,35 @@
 
     <ion-side-menu side="left">
         <ion-header-bar class="bar-stable">
-        <h1 class="title">Fishbook</h1>
+            <h1 class="title">Fishbook</h1>
         </ion-header-bar>
         <ion-content>
             <ion-list>
-                <ion-item nav-clear menu-close class="item-icon-left" ng-click="login()">
+<!--                 <ion-item ng-if="!currentUser"nav-clear menu-close class="item-icon-left" ng-click="openLogin()">
                     <i class="icon ion-key"></i>
                     Login
-                </ion-item>
-                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/posts">
+                </ion-item> -->
+<!--                 <ion-item ng-if="currentUser" nav-clear menu-close class="item-icon-left" href="#/app/posts">
                     <i class="icon ion-funnel"></i>
                     Feed
                 </ion-item>
-                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/spots">
+                <ion-item ng-if="currentUser" nav-clear menu-close class="item-icon-left" href="#/app/spots">
                     <i class="icon ion-map"></i>
                     Spots
-                </ion-item>
-                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/users">
+                </ion-item> -->
+                <ion-item ng-if="currentUser" nav-clear menu-close class="item-icon-left" href="#/app/users">
                     <i class="icon ion-person-stalker"></i>
                     People
                 </ion-item>
-                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/conversations">
+                <ion-item ng-if="currentUser" nav-clear menu-close class="item-icon-left" href="#/app/conversations">
                     <i class="icon ion-chatbubbles"></i>
                     Messages
                 </ion-item>
-                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/catches">
+<!--                 <ion-item ng-if="currentUser" nav-clear menu-close class="item-icon-left" href="#/app/catches">
                     <i class="icon ion-chatbubbles"></i>
                     Catches
-                </ion-item>
-                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/search">
+                </ion-item> -->
+                <ion-item ng-if="currentUser" nav-clear menu-close class="item-icon-left" href="#/app/search">
                     <i class="icon ion-search"></i>
                     Search
                 </ion-item>

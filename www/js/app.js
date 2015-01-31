@@ -4,27 +4,40 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services'])
+angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services', 'LocalStorageModule'])
 
 .constant('AUTH_EVENTS', {
-  loginSuccess: 'auth-login-success',
-  loginFailed: 'auth-login-failed',
-  logoutSuccess: 'auth-logout-success',
-  sessionTimeout: 'auth-session-timeout',
-  notAuthenticated: 'auth-not-authenticated',
+    loginRequired: 'auth-login-required',
+    loginSuccess: 'auth-login-success',
+    loginFailed: 'auth-login-failed',
+    logoutSuccess: 'auth-logout-success',
+    sessionTimeout: 'auth-session-timeout',
+    notAuthenticated: 'auth-not-authenticated',
 })
 
-.run(function($ionicPlatform, $rootScope, AuthService, AUTH_EVENTS) {
+.run(function($ionicPlatform, $rootScope, $state, AUTH_EVENTS, AuthService, localStorageService) {
     $ionicPlatform.ready(function() {
 
-        // $rootScope.$on('$stateChangeStart', function (event, next) {
-        //     event.preventDefault();
+        $rootScope.previousState;
+        $rootScope.currentState;
+        $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
+            $rootScope.previousState = from.name;
+            $rootScope.currentState = to.name;
+            console.log('Previous state:'+$rootScope.previousState)
+            console.log('Current state:'+$rootScope.currentState)
+        });
 
-        //     // user is not logged in
-        //     if (!AuthService.isAuthenticated()) {
-        //         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-        //     }
-        // });
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            // user is not logged in
+            if ((toState.data && toState.data.loginRequired) && !AuthService.isAuthenticated()) {
+                event.preventDefault();
+
+                console.log("Not authenticated", toState);
+                $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+
+                $state.go('app.auth');
+            }
+        });
 
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -36,13 +49,30 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services'
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
-
     });
 })
 
-// .config(['$httpProvider', function($httpProvider) {
-//     $httpProvider.defaults.withCredentials = true;
-// }])
+.config(function ($httpProvider) {
+    $httpProvider.interceptors.push(['$injector', function ($injector) {
+        return $injector.get('AuthInterceptor');
+    }]);
+})
+
+.factory('AuthInterceptor', function ($rootScope, $q, AUTH_EVENTS) {
+    return {
+        responseError: function (response) {
+            console.log("Intercepted");
+            $rootScope.$broadcast({
+                401: AUTH_EVENTS.notAuthenticated,
+                403: AUTH_EVENTS.notAuthorized,
+                419: AUTH_EVENTS.sessionTimeout,
+                440: AUTH_EVENTS.sessionTimeout
+            }[response.status], response);
+
+            return $q.reject(response);
+        }
+    };
+})
 
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -50,8 +80,62 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services'
     .state('app', {
         url: "/app",
         abstract: true,
-        templateUrl: "templates/menu.html",
-        controller: 'AppCtrl'
+        templateUrl: "templates/root.html",
+        controller: 'AppCtrl',
+        // data: {
+        //     loginRequired: false
+        // }
+    })
+
+    .state('root', {
+        url: "/",
+        templateUrl: "templates/root.html",
+        controller: 'AppCtrl',
+        // data: {
+        //     loginRequired: false
+        // }
+    })
+
+    .state('app.tutorial', {
+        url: '/tutorial',
+        views: {
+            'rootContent': {
+                templateUrl: 'templates/tutorial.html',
+                controller: 'TutorialCtrl'
+            }
+        },
+        data: {
+            loginRequired: false
+        }
+    })
+
+    .state('app.auth', {
+        url: '/auth',
+        views: {
+            'rootContent': {
+                templateUrl: 'templates/auth.html',
+                controller: 'AuthCtrl'
+            }
+        },
+        data: {
+            loginRequired: false
+        }
+    })
+
+    .state('app.tabs', {
+        url: "/tabs",
+        abstract: true,
+        views: {
+            'rootContent': {
+                templateUrl: 'templates/menu.html'
+            },
+            'menuContent': {
+                templateUrl: "templates/app.html",
+            }
+        },
+        data: {
+            loginRequired: true
+        }
     })
 
     .state('app.search', {
@@ -60,35 +144,35 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services'
             'menuContent': {
                 templateUrl: "templates/search.html"
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
-    .state('app.browse', {
-        url: "/browse",
-        views: {
-            'menuContent': {
-                templateUrl: "templates/browse.html"
-            }
-        }
-    })
-
-    .state('app.spots', {
+    .state('app.tabs.spots', {
         url: "/spots",
         views: {
-            'menuContent': {
+            'spots-tab': {
                 templateUrl: "templates/spots.html",
                 controller: 'SpotsCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
-    .state('app.spot', {
+    .state('app.tabs.spot', {
         url: "/spots/:spotId",
         views: {
-            'menuContent': {
+            'spots-tab': {
                 templateUrl: "templates/spot.html",
                 controller: 'SpotCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
@@ -99,6 +183,9 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services'
                 templateUrl: "templates/users.html",
                 controller: 'UsersCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
@@ -109,46 +196,64 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services'
                 templateUrl: "templates/user.html",
                 controller: 'UserCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
-    .state('app.posts', {
+    .state('app.tabs.posts', {
         url: "/posts",
         views: {
             'menuContent': {
+                templateUrl: 'templates/app.html'
+            },
+            'posts-tab@': {
                 templateUrl: "templates/posts.html",
                 controller: 'PostsCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
-    .state('app.post', {
+    .state('app.tabs.post', {
         url: "/posts/:postId",
         views: {
-            'menuContent': {
+            'posts-tab': {
                 templateUrl: "templates/post.html",
                 controller: 'PostCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
-    .state('app.post.comments', {
+    .state('app.tabs.post.comments', {
         url: "/posts/:postId/comments",
         views: {
-            'menuContent': {
+            'posts-tab': {
                 templateUrl: "templates/post.html",
                 controller: 'PostCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
-    .state('app.post.comment', {
+    .state('app.tabs.post.comment', {
         url: "/posts/:postId/comments/:commentId",
         views: {
-            'menuContent': {
+            'posts-tab': {
                 templateUrl: "templates/comment.html",
                 controller: 'PostCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
@@ -159,6 +264,9 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services'
                 templateUrl: "templates/conversations.html",
                 controller: 'ConversationsCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
@@ -169,6 +277,9 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services'
                 templateUrl: "templates/conversation.html",
                 controller: 'ConversationCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
@@ -179,6 +290,9 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services'
                 templateUrl: "templates/messages.html",
                 controller: 'MessagesCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     })
 
@@ -189,10 +303,11 @@ angular.module('fishbook', ['ionic', 'fishbook.controllers', 'fishbook.services'
                 templateUrl: "templates/message.html",
                 controller: 'MessageCtrl'
             }
+        },
+        data: {
+            loginRequired: true
         }
     });
 
-
-    // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/spots');
+    $urlRouterProvider.otherwise('/');
 });
