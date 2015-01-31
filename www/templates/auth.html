@@ -1,14 +1,16 @@
-<ion-view ng-controller="AuthCtrl">
+<ion-view ng-controller="AuthController">
     <ion-header-bar>
-        <h1 class="title">Login or Register</h1>
+        <h1 class="title">Login to Fishbook</h1>
 
         <!-- <div class="buttons">
             <button class="button button-clear" ng-click="closeLogin()">Close</button>
         </div> -->
     </ion-header-bar>
 
-    <ion-content padding="true">
-        <p>Fishbook requires a user account; How else would everyone know what a great fisherman you are?</p>
+    <ion-content>
+        <div class="padding">
+            <p>Fishbook requires a user account; How else would everyone know what a great fisherman you are?</p>
+        </div>
 
         <form>
             <div class="card">
@@ -23,10 +25,39 @@
                 </label>
             </div>
 
+            <div ng-show="registering" class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Name</span>
+                    <input type="text" ng-model="user.name" placeholder="John Doe">
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Email</span>
+                    <input type="email" ng-model="user.email" placeholder="john@suhr.com">
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Phone</span>
+                    <input type="text" ng-model="user.phone" placeholder="956-555-5555">
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Short Bio</span>
+                    <textarea ng-model="user.bio" placeholder="Equipment and style"></textarea>
+                </label>
 
-            <div class="button-bar">
-                <button class="button button-block button-stable" ng-click="register(credentials)">Sign Up</button>
-                <button class="button button-block button-positive" ng-click="login(credentials)">Log in</button>
+
+
+                <label class="item item-input item-stacked-label" ng-click="startUpload()">
+                    <i class="icon ion-image"></i>
+                    <span class="input-label">Upload Avatar </span>
+                </label>
+            </div>
+
+
+            <div class="padding">
+                <div class="button-bar">
+                    <button class="button button-block button-stable" ng-hide="registering" ng-click="startRegistration()">Sign Up</button>
+                    <button class="button button-block button-positive" ng-hide="registering" ng-click="login(credentials)">Log in</button>
+                    <button class="button button-block button-positive" ng-show="registering" ng-click="register(credentials, user)">Sign Up</button>
+                </div>
             </div>
 
             <div class="text-center">{{ message }}</div>

@@ -1,4 +1,4 @@
-angular.module('fishbook.services', ['ngResource', 'LocalStorageModule'])
+angular.module('fishbookServices', ['ionic', 'ngResource', 'LocalStorageModule'])
 
 .factory('Spot', function($resource) {
     return $resource('http://fishbook.app/api/spots/:id');
@@ -50,6 +50,63 @@ angular.module('fishbook.services', ['ngResource', 'LocalStorageModule'])
     };
 })
 
+.factory('Camera', function($q, $ionicActionSheet) {
+    var camera = {}
+
+    camera.getPicture = function(options) {
+        var q = $q.defer();
+
+        navigator.camera.getPicture(function(result) {
+            // Do any magic you need
+            q.resolve(result);
+        }, function(err) {
+            q.reject(err);
+        }, options);
+
+        return q.promise;
+    };
+
+   // Show the action sheet
+    camera.showActions = function() {
+        $ionicActionSheet.show({
+            buttons: [
+                { text: 'From Camera' },
+                { text: 'From Device' }
+            ],
+
+            //destructiveText: 'Delete',
+            titleText: 'Upload Photo',
+            cancelText: 'Cancel',
+            cancel: function() {
+            },
+            buttonClicked: function(index) {
+                if(index == 0) {
+                    camera.getPicture().then(function(imageURI) {
+                        console.log(imageURI);
+                    }, function(err) {
+                        console.err(err);
+                    });
+
+                } else if(index == 1) {
+                    camera.getPicture({
+                        quality: 50,
+                        destinationType: navigator.camera.DestinationType.FILE_URI,
+                        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+                    }).then(function(imageURI) {
+                        console.log(imageURI);
+                    }, function(err) {
+                        console.err(err);
+                    });
+                }
+
+                return true;
+            }
+        });
+    };
+
+    return camera;
+})
+
 .service('Session', function () {
     this.create = function (sessionId, userId) {
         this.key = sessionId;
@@ -63,3 +120,4 @@ angular.module('fishbook.services', ['ngResource', 'LocalStorageModule'])
 
     return this;
 });
+

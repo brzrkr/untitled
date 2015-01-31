@@ -1,0 +1,27 @@
+<ion-tabs class="tabs-positive tabs-bottom tabs-icon-only">
+
+    <ion-tab title="Feed" icon-on="ion-home" ui-sref="app.main.posts" icon-off="ion-home">
+        <ion-content has-header="true">
+            <ion-nav-view name="posts-tab"></ion-nav-view>
+        </ion-content>
+    </ion-tab>
+
+    <ion-tab title="Spots" icon-on="ion-map" ui-sref="app.main.spots" icon-off="ion-map">
+        <ion-content has-header="true">
+            <ion-nav-view name="spots-tab"></ion-nav-view>
+        </ion-content>
+    </ion-tab>
+
+    <ion-tab title="Catches" icon-on="ion-images" ui-sref="app.main.catches" icon-off="ion-images">
+        <ion-content has-header="true">
+            <ion-nav-view name="catches-tab"></ion-nav-view>
+        </ion-content>
+    </ion-tab>
+
+    <ion-tab title="Info" icon-on="ion-clipboard" ui-sref="app.main.info" icon-off="ion-clipboard">
+        <ion-content has-header="true">
+            <ion-nav-view name="info-tab"></ion-nav-view>
+        </ion-content>
+    </ion-tab>
+
+</ion-tabs>

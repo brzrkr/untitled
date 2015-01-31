@@ -1,6 +1,6 @@
-angular.module('fishbook.controllers', ['LocalStorageModule'])
+angular.module('fishbookControllers', ['LocalStorageModule'])
 
-.controller('AppCtrl', function($scope, $rootScope, $state, $ionicModal, AUTH_EVENTS, Session, AuthService, localStorageService) {
+.controller('AppController', function($scope, $rootScope, $state, $ionicModal, AUTH_EVENTS, Session, AuthService, localStorageService) {
 
     $scope.currentUser = null;
 
@@ -58,29 +58,49 @@ angular.module('fishbook.controllers', ['LocalStorageModule'])
     if (localStorageService.get('didTutorial') == 1) {
         console.log('Skipping tutorial.');
 
-        $scope.setCurrentUser(localStorageService.get('currentUser'));
-        Session.create($scope.currentUser.key, $scope.currentUser.id);
-        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+        if(localStorageService.get('currentUser')) {
+            $scope.setCurrentUser(localStorageService.get('currentUser'));
+            Session.create($scope.currentUser.key, $scope.currentUser.id);
+            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+        }
 
-        //if($scope.currentUser) {
-            $state.go('app.tabs.posts');
-        //}
+        if($scope.currentUser) {
+            $state.go('app.main.posts');
+        } else {
+            $state.go('app.auth');
+        }
     } else {
         console.log('Going to tutorial.');
         $state.go('app.tutorial');
     }
 })
 
-.controller('AuthCtrl', function($scope, $state, $rootScope, User, AUTH_EVENTS, AuthService) {
+.controller('AuthController', function($scope, $state, $rootScope, User, AUTH_EVENTS, AuthService, Camera) {
 
-    $scope.credentials = {
-        username: '',
-        password: ''
+    // $scope.credentials = {
+    //     username: '',
+    //     password: ''
+    // };
+
+    $scope.startRegistration = function(credentials) {
+        $scope.registering = true;
+    };
+
+    $scope.startUpload = function() {
+        Camera.showActions();
     };
 
     // Perform the login action when the user submits the login form
-    $scope.register = function(credentials) {
+    $scope.register = function(credentials, user) {
         console.log("Should register");
+
+        $scope.user = new User();
+
+        $scope.user.data.username = credentials.username;
+        $scope.user.data.password = credentials.password;
+
+        User.save($scope.user, function() {
+        });
     };
 
     // Perform the login action when the user submits the login form
@@ -93,7 +113,7 @@ angular.module('fishbook.controllers', ['LocalStorageModule'])
             if($rootScope.previousState !== 'root') {
                 $state.go($rootScope.previousState);
             } else {
-                $state.go('app.tabs.posts');
+                $state.go('app.main.posts');
             }
 
         }, function() {
@@ -103,16 +123,35 @@ angular.module('fishbook.controllers', ['LocalStorageModule'])
     };
 })
 
-.controller('TutorialCtrl', function($scope, $state, $ionicSlideBoxDelegate, localStorageService) {
+.controller('RegisterController', function($scope, $state, $rootScope, User) {
+    $scope.startRegister = function(credentials) {
+    };
+
+    $scope.register = function(credentials) {
+        $scope.user = new User();
+
+        $scope.user.data.username = credentials.username;
+        $scope.user.data.password = credentials.password;
+
+        User.save($scope.user, function() {
+        });
+    };
+})
+
+.controller('TutorialController', function($scope, $state, $ionicSlideBoxDelegate, localStorageService) {
     // Called to navigate to the main app
     $scope.startApp = function() {
-        $state.go('app.tabs.posts');
+        $state.go('app.main.posts');
 
         // Set a flag that we finished the tutorial
         localStorageService.set('didTutorial', 1);
 
         console.log('Starting application now.');
     };
+
+    if(localStorageService.get('didTutorial') == 1) {
+        $scope.startApp();
+    }
 
     $scope.slideIndex = 0;
 
@@ -132,56 +171,56 @@ angular.module('fishbook.controllers', ['LocalStorageModule'])
 })
 
 
-.controller('SpotsCtrl', function($scope, Spot) {
+.controller('SpotsController', function($scope, Spot) {
     // Get all spots
     $scope.spots = Spot.query();
 })
 
-.controller('UsersCtrl', function($scope, User) {
+.controller('UsersController', function($scope, User) {
     // Get all users
     $scope.users  = User.query();
 })
 
-.controller('ConversationsCtrl', function($scope, Conversation) {
+.controller('ConversationsController', function($scope, Conversation) {
     // Get all conversations
     $scope.conversations = Conversation.query();
 })
 
-.controller('MessagesCtrl', function($scope, Message) {
+.controller('MessagesController', function($scope, Message) {
     // Get all messages
     $scope.messages = Message.query();
 })
 
-.controller('PostsCtrl', function($scope, Post) {
+.controller('PostsController', function($scope, Post) {
     // Get all posts
     $scope.posts = Post.query();
 })
 
-.controller('SpotCtrl', function($scope, $stateParams, Spot) {
+.controller('SpotController', function($scope, $stateParams, Spot) {
     $scope.spot = Spot.get({
         spotId: $stateParams.spotId
     });
 })
 
-.controller('UserCtrl', function($scope, $stateParams, User) {
+.controller('UserController', function($scope, $stateParams, User) {
     $scope.user = User.get({
         userId: $stateParams.userId
     });
 })
 
-.controller('PostCtrl', function($scope, $stateParams, Post) {
+.controller('PostController', function($scope, $stateParams, Post) {
     $scope.post = Post.get({
         postId: $stateParams.postId
     });
 })
 
-.controller('ConversationCtrl', function($scope, $stateParams, Conversation) {
+.controller('ConversationController', function($scope, $stateParams, Conversation) {
     $scope.conversation = Conversation.get({
         conversationId: $stateParams.conversationId
     });
 })
 
-.controller('MessageCtrl', function($scope, $stateParams, Message) {
+.controller('MessageController', function($scope, $stateParams, Message) {
     $scope.message = Message.get({
         messageId: $stateParams.messageId
     });
