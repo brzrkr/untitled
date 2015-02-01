@@ -40,7 +40,7 @@ angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 
                 console.log("Not authenticated", toState);
                 $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
 
-                $state.go('app.auth');
+                $state.go('app.auth.login');
             }
         });
 
@@ -137,8 +137,32 @@ angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 
 
     .state('app.auth', {
         url: '/auth',
-        templateUrl: 'templates/auth.html',
-        controller: 'AuthController',
+        abstract: true,
+        templateUrl: 'templates/root.html',
+        controller: function($scope, $rootScope) {
+            $scope.credentials = {
+                username: '',
+                password: ''
+            }
+        },
+        data: {
+            loginRequired: true
+        }
+    })
+
+    .state('app.auth.login', {
+        url: '/login',
+        templateUrl: 'templates/login.html',
+        controller: 'LoginController',
+        data: {
+            loginRequired: false
+        }
+    })
+
+    .state('app.auth.register', {
+        url: '/register',
+        templateUrl: 'templates/register.html',
+        controller: 'RegisterController',
         data: {
             loginRequired: false
         }
@@ -238,8 +262,8 @@ angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 
         url: "/posts/:postId/comments",
         views: {
             'posts-tab': {
-                templateUrl: "templates/post.html",
-                controller: 'PostController'
+                templateUrl: "templates/comments.html",
+                controller: 'CommentsController'
             }
         },
         data: {
@@ -252,7 +276,7 @@ angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 
         views: {
             'posts-tab': {
                 templateUrl: "templates/comment.html",
-                controller: 'PostController'
+                controller: 'CommentController'
             }
         },
         data: {
@@ -303,7 +327,7 @@ angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 
         url: "/conversations/:conversationId/messages/:messageId",
         views: {
             'menuContent': {
-                templateUrl: "templates/message.html",
+                templateUrl: "templates/messages.html",
                 controller: 'MessageController'
             }
         },

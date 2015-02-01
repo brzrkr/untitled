@@ -33,3 +33,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 .text-center { text-align: center; }
 
+
+
+.comment .item-avatar img {
+    height: 30px;
+    border-radius: 50%
+}

@@ -9,11 +9,21 @@ angular.module('fishbookServices', ['ionic', 'ngResource', 'LocalStorageModule']
 })
 
 .factory('Post', function($resource) {
-    return $resource('http://fishbook.app/api/posts/:id');
+    return $resource('http://fishbook.app/api/posts/:postId', {}, {
+        update: {
+            method: 'POST',
+            params: {id: '@id'},
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            transformRequest: function(data) {
+                data._method = 'PUT';
+                return data;
+            }
+        }
+    });
 })
 
 .factory('Comment', function($resource) {
-    return $resource('http://fishbook.app/api/posts/comments/:id');
+    return $resource('http://fishbook.app/api/posts/:postId/comments/:commentId');
 })
 
 .factory('Conversation', function($resource) {
@@ -35,10 +45,12 @@ angular.module('fishbookServices', ['ionic', 'ngResource', 'LocalStorageModule']
             return $http
             .post('http://fishbook.app/api/login', credentials)
             .then(function (res) {
-                Session.create(res.data.key, res.data.id);
+                if(res.data.success == true) {
+                    Session.create(res.data.user.key, res.data.user.id);
 
-                localStorageService.set('session', Session);
-                localStorageService.set('currentUser', res.data);
+                    localStorageService.set('session', Session);
+                    localStorageService.set('currentUser', res.data.user);
+                }
 
                 return res.data;
             });

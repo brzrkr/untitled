@@ -8,51 +8,14 @@ angular.module('fishbookControllers', ['LocalStorageModule'])
         $scope.currentUser = user;
     };
 
-    // Create the login modal that we will use later
-    // $ionicModal.fromTemplateUrl('templates/auth.html', {
-    //     scope: $scope,
-    //     animation: 'slide-in-up'
-    // }).then(function(modal) {
-    //     $scope.authModal = modal;
-    //     console.log($state);
-
-    //     $scope.$on(AUTH_EVENTS.notAuthenticated, function() {
-    //         // if($state.current.data.loginRequired) {
-    //             console.log($state);
-    //             $scope.openAuth()
-    //         // }
-    //     });
-    //     $scope.$on(AUTH_EVENTS.sessionTimeout, function() {
-    //         // if($state.current.data.loginRequired) {
-    //             console.log($state);
-    //             $scope.openAuth()
-    //         // }
-    //     });
-    // });
-    //
-    //
-    // $scope.$on(AUTH_EVENTS.loginSuccess, function() {
-    //     $state.go($rootScope.previousState);
-    // });
-
     $scope.$on(AUTH_EVENTS.notAuthenticated, function() {
         console.log($state);
-        $state.go('app.auth');
+        $state.go('app.auth.login');
     });
     $scope.$on(AUTH_EVENTS.sessionTimeout, function() {
         console.log($state);
-        $state.go('app.auth');
+        $state.go('app.auth.login');
     });
-
-    // Triggered in the login modal to close it
-    // $scope.closeAuth = function() {
-    //     $scope.authModal.hide();
-    // };
-
-    // // Open the login modal
-    // $scope.openAuth = function() {
-    //     $scope.authModal.show();
-    // };
 
     // Check if the user already did the tutorial and skip it if so
     if (localStorageService.get('didTutorial') == 1) {
@@ -67,7 +30,7 @@ angular.module('fishbookControllers', ['LocalStorageModule'])
         if($scope.currentUser) {
             $state.go('app.main.posts');
         } else {
-            $state.go('app.auth');
+            $state.go('app.auth.login');
         }
     } else {
         console.log('Going to tutorial.');
@@ -75,68 +38,71 @@ angular.module('fishbookControllers', ['LocalStorageModule'])
     }
 })
 
-.controller('AuthController', function($scope, $state, $rootScope, User, AUTH_EVENTS, AuthService, Camera) {
+.controller('LoginController', function($scope, $state, $rootScope, $ionicPopup, User, AUTH_EVENTS, AuthService, Camera) {
+    // Perform the login action when the user submits the login form
+    $scope.login = function(credentials) {
+        console.log("Logging in", credentials);
 
-    // $scope.credentials = {
-    //     username: '',
-    //     password: ''
-    // };
+        AuthService.login(credentials).then(function(data) {
+            //$scope.message = data.message;
 
-    $scope.startRegistration = function(credentials) {
-        $scope.registering = true;
+            if(data.success == true) {
+                $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+                $scope.setCurrentUser(data.user);
+
+                if($rootScope.previousState !== 'root' &&
+                   $rootScope.previousState !== 'app.tutorial' &&
+                   $rootScope.previousState !== 'app.auth.login' &&
+                   $rootScope.previousState !== 'app.auth.register') {
+                    $state.go($rootScope.previousState);
+                } else {
+                    $state.go('app.main.posts');
+                }
+            } else {
+                $ionicPopup.alert({
+                    title: 'Error: Authentication',
+                    template: data.message
+                });
+                $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+            }
+
+        });
     };
+})
 
+.controller('RegisterController', function($scope, $state, $rootScope, $ionicPopup, User, Camera) {
     $scope.startUpload = function() {
         Camera.showActions();
     };
 
     // Perform the login action when the user submits the login form
-    $scope.register = function(credentials, user) {
-        console.log("Should register");
-
-        $scope.user = new User();
-
-        $scope.user.data.username = credentials.username;
-        $scope.user.data.password = credentials.password;
-
-        User.save($scope.user, function() {
-        });
-    };
-
-    // Perform the login action when the user submits the login form
-    $scope.login = function(credentials) {
-        AuthService.login(credentials).then(function(user) {
-            $scope.message = "Successfully logged in.";
-            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-            $scope.setCurrentUser(user);
-
-            if($rootScope.previousState !== 'root') {
-                $state.go($rootScope.previousState);
-            } else {
-                $state.go('app.main.posts');
-            }
-
-        }, function() {
-            $scope.message = "Invalid username or password. Please try again.";
-            $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
-        });
-    };
-})
-
-.controller('RegisterController', function($scope, $state, $rootScope, User) {
-    $scope.startRegister = function(credentials) {
-    };
-
     $scope.register = function(credentials) {
+        console.log("Registering", credentials);
+
         $scope.user = new User();
 
-        $scope.user.data.username = credentials.username;
-        $scope.user.data.password = credentials.password;
+        $scope.user.data = credentials;
 
-        User.save($scope.user, function() {
+        $scope.user.$save().then(function(res)  {
+            console.log(res);
+
+            if(res.success) {
+                console.log("Registered successfully", res.message)
+
+                //$scope.login(credentials);
+                $state.go('app.auth.login');
+            } else {
+                $ionicPopup.alert({
+                    title: res.message,
+                    template: res.errors
+                });
+            }
+        }).catch(function(req) {
+            console.log("Error registering.", req);
         });
     };
 })
+
 
 .controller('TutorialController', function($scope, $state, $ionicSlideBoxDelegate, localStorageService) {
     // Called to navigate to the main app
