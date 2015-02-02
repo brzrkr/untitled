@@ -1,125 +1,128 @@
-angular.module('fishbookServices', ['ionic', 'ngResource', 'LocalStorageModule'])
+angular.module('fishbookServices', [])
 
-.factory('Spot', function($resource) {
-    return $resource('http://fishbook.app/api/spots/:id');
-})
-
-.factory('User', function($resource) {
-    return $resource('http://fishbook.app/api/users/:id');
-})
-
-.factory('Post', function($resource) {
-    return $resource('http://fishbook.app/api/posts/:postId', {}, {
-        update: {
-            method: 'POST',
-            params: {id: '@id'},
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            transformRequest: function(data) {
-                data._method = 'PUT';
-                return data;
-            }
-        }
-    });
-})
-
-.factory('Comment', function($resource) {
-    return $resource('http://fishbook.app/api/posts/:postId/comments/:commentId');
-})
-
-.factory('Conversation', function($resource) {
-    return $resource('http://fishbook.app/api/conversations/:id');
-})
-
-.factory('Message', function($resource) {
-    return $resource('http://fishbook.app/api/conversations/messages/:id');
-})
-
-.factory('Catch', function($resource) {
-    return $resource('http://fishbook.app/api/catches/:id');
-})
-
-.factory('AuthService', function ($http, Session, localStorageService) {
+.factory('AuthService', function ($http, Session, localStorageService, Restangular) {
 
     return {
+        // method for actually logging the user in
         login: function (credentials) {
-            return $http
-            .post('http://fishbook.app/api/login', credentials)
-            .then(function (res) {
+
+            // fire off our login request and return the response
+            return $http.post('http://fishbook.app/api/login', credentials).then(function (res) {
+
+                // we've logged in successfully
                 if(res.data.success == true) {
+                    // create our session
                     Session.create(res.data.user.key, res.data.user.id);
 
+                    // persist our session and returned authenticated user
                     localStorageService.set('session', Session);
                     localStorageService.set('currentUser', res.data.user);
+
+                    // set restangular to send our key with all request
+                    Restangular.setDefaultRequestParams({ key: res.data.user.key });
                 }
 
                 return res.data;
             });
         },
 
+        // shortucut for checking if a user is authenticated
         isAuthenticated: function () {
             return !!Session.userId;
         }
     };
+
 })
 
 .factory('Camera', function($q, $ionicActionSheet) {
-    var camera = {}
 
-    camera.getPicture = function(options) {
-        var q = $q.defer();
+    return {
+        // method for actually retrieving a photo from the camera
+        getPicture: function(options) {
+            var q = $q.defer();
 
-        navigator.camera.getPicture(function(result) {
-            // Do any magic you need
-            q.resolve(result);
-        }, function(err) {
-            q.reject(err);
-        }, options);
+            // open camera for photo
+            navigator.camera.getPicture(function(result) {
 
-        return q.promise;
-    };
+                // we have a photo
+                // magic
 
-   // Show the action sheet
-    camera.showActions = function() {
-        $ionicActionSheet.show({
-            buttons: [
-                { text: 'From Camera' },
-                { text: 'From Device' }
-            ],
+                q.resolve(result);
+            }, function(err) {
 
-            //destructiveText: 'Delete',
-            titleText: 'Upload Photo',
-            cancelText: 'Cancel',
-            cancel: function() {
-            },
-            buttonClicked: function(index) {
-                if(index == 0) {
-                    camera.getPicture().then(function(imageURI) {
-                        console.log(imageURI);
-                    }, function(err) {
-                        console.err(err);
-                    });
+                // we couldn't retreive a photo
+                // magic
 
-                } else if(index == 1) {
-                    camera.getPicture({
-                        quality: 50,
-                        destinationType: navigator.camera.DestinationType.FILE_URI,
-                        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-                    }).then(function(imageURI) {
-                        console.log(imageURI);
-                    }, function(err) {
-                        console.err(err);
-                    });
+                q.reject(err);
+            }, options);
+
+            return q.promise;
+        },
+
+        // show the action sheet allowingthe user to decide between camera, or photo from file
+        showActions: function() {
+
+            $ionicActionSheet.show({
+
+                buttons: [
+                    { text: 'From Camera' },
+                    { text: 'From Device' }
+                ],
+
+                titleText: 'Upload Photo',
+                cancelText: 'Cancel',
+
+                cancel: function() {
+                },
+
+                buttonClicked: function(index) {
+
+                    // user chose to take a photo with camera
+                    if(index == 0) {
+
+                        // open user's camera for photo retreival
+                        this.getPicture().then(function(imageURI) {
+
+                            // we have a photo
+                            console.log(imageURI);
+
+                        }, function(err) {
+
+                            // we could retrieve a photo
+                            console.err(err);
+
+                        });
+
+                    } else if(index == 1) {
+                        // user chose to get a photo from the phone's file system
+                        // open the native photo retrieval system
+                        this.getPicture({
+                            quality: 50,
+                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+                        }).then(function(imageURI) {
+
+                            // we have a photo
+                            console.log(imageURI);
+
+                        }, function(err) {
+
+                            // we could retrieve a photo
+                            console.err(err);
+
+                        });
+                    }
+
+                    return true;
                 }
-
-                return true;
-            }
-        });
+            });
+        }
     };
-
-    return camera;
 })
 
+// simple session singleton for holding our key and user id
 .service('Session', function () {
+
     this.create = function (sessionId, userId) {
         this.key = sessionId;
         this.userId = userId;
@@ -131,5 +134,6 @@ angular.module('fishbookServices', ['ionic', 'ngResource', 'LocalStorageModule']
     };
 
     return this;
+
 });
 

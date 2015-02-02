@@ -1,11 +1,6 @@
-// Ionic Starter App
+angular.module('fishbook', ['ionic', 'restangular', 'fishbookControllers', 'fishbookServices', 'LocalStorageModule'])
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
-angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 'LocalStorageModule'])
-
+// shortcut constants for easier use of authentication events
 .constant('AUTH_EVENTS', {
     loginRequired: 'auth-login-required',
     loginSuccess: 'auth-login-success',
@@ -16,34 +11,48 @@ angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 
 })
 
 .run(function($ionicPlatform, $rootScope, $state, AUTH_EVENTS, AuthService, localStorageService) {
+
+    // device or browser is ready, LETS GO
     $ionicPlatform.ready(function() {
 
+        // seems to only fire on phones
         document.addEventListener("deviceready", onDeviceReady, false);
         function onDeviceReady() {
             console.log("onDeviceReady");
         }
 
-        $rootScope.previousState;
-        $rootScope.currentState;
+        // placeholders for state info
+        $rootScope.previousState = "";
+        $rootScope.currentState = "";
+
+        // called after a state is transitioned to successfully
         $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
+
+            // save our previous and current state info, so we can go back to it if we need to
             $rootScope.previousState = from.name;
+            $rootScope.previousStateParams = fromParams;
             $rootScope.currentState = to.name;
-            console.log('Previous state:'+$rootScope.previousState)
-            console.log('Current state:'+$rootScope.currentState)
+
+            console.log('Previous state: '+$rootScope.previousState)
+            console.log('Current state: '+$rootScope.currentState)
         });
 
+
+        // called before a state is transitioned to
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            // user is not logged in
+            // determine if the state requires login, and check if the user is logged in if so
             if ((toState.data && toState.data.loginRequired) && !AuthService.isAuthenticated()) {
+
+                // prevent transitioning to the state
                 event.preventDefault();
 
-                console.log("Not authenticated", toState);
+                // fire off not authenticated event and transition to the login screen
                 $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-
                 $state.go('app.auth.login');
             }
         });
 
+        // called after the current controller changes
         $rootScope.$on('onControllerChanged', function(oldController, oldIndex, newController, newIndex) {
             console.log('Controller changed', oldController, oldIndex, newController, newIndex);
             console.log(arguments);
@@ -62,24 +71,47 @@ angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 
     });
 })
 
-.config(function($ionicConfigProvider) {
+.config(function($ionicConfigProvider, $compileProvider, $httpProvider, RestangularProvider, localStorageServiceProvider) {
+
+    // increase our view cache, keeps move views in memory (hmm?)
     $ionicConfigProvider.views.maxCache(20);
 
+    // push our tabs down to the bottom on Android as well
     $ionicConfigProvider.tabs.position('bottom');
-})
 
-.config(function($compileProvider){
+    // whitelist some uri's, seems to be needed sometimes for the camera
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
-})
 
-.config(function ($httpProvider) {
+    // setup our auth interceptor, so we can listen for authentication related http response codes
     $httpProvider.interceptors.push(['$injector', function ($injector) {
         return $injector.get('AuthInterceptor');
     }]);
+
+    // initialize restangular to use local development server for all requests
+    RestangularProvider.setBaseUrl('http://fishbook.app/api');
+
+    // setup restangular to play nice with our responses
+    // response = {
+    //     success: boolean
+    //     data: list|object
+    //     meta: object with extra stuff
+    // }
+    RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
+        //console.log(data, operation, what, url, response, deferred);
+
+        var extractedData;
+
+        extractedData = (data.data != undefined) ? data.data : data;
+        extractedData.success = data.success;
+        extractedData.message = data.message;
+        extractedData.meta = data.meta;
+        return extractedData;
+    });
 })
 
 .factory('AuthInterceptor', function ($rootScope, $q, AUTH_EVENTS) {
     return {
+        // listen for authenticated related response codes and broadcast the appropriate authentication event
         responseError: function (response) {
             console.log("Intercepted");
             $rootScope.$broadcast({
@@ -101,20 +133,7 @@ angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 
         url: "/app",
         templateUrl: "templates/root.html",
         controller: 'AppController',
-        // data: {
-        //     loginRequired: false
-        // }
     })
-
-    // .state('app', {
-    //     url: "/app",
-    //     abstract: true,
-    //     templateUrl: "templates/main.html",
-    //     controller: 'AppController',
-    //     // data: {
-    //     //     loginRequired: false
-    //     // }
-    // })
 
     .state('app.tutorial', {
         url: '/tutorial',
@@ -140,6 +159,8 @@ angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 
         abstract: true,
         templateUrl: 'templates/root.html',
         controller: function($scope, $rootScope) {
+            // created this state so we could transition to and from registration
+            // while keeping the credentials in scope
             $scope.credentials = {
                 username: '',
                 password: ''
@@ -247,6 +268,11 @@ angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 
 
     .state('app.main.post', {
         url: "/posts/:postId",
+        // resolve: {
+        //     post: function(Restangular, $route) {
+        //         return Restangular.one('posts', $route.current.params.postId).get();
+        //     }
+        // },
         views: {
             'posts-tab': {
                 templateUrl: "templates/post.html",
@@ -336,5 +362,6 @@ angular.module('fishbook', ['ionic', 'fishbookControllers', 'fishbookServices', 
         }
     });
 
+    // no other states were matched
     $urlRouterProvider.otherwise('/app');
 });
